@@ -189,7 +189,30 @@ class ResqueScheduler_Worker
 	{
 		self::pruneDeadWorkers();
 
+		$this->registerSigHandlers();
 		$this->registerWorker();
+	}
+
+	/**
+	 * Register signal handlers that a worker should respond to.
+	 *
+	 * TERM: Shutdown immediately and stop processing jobs.
+	 * INT: Shutdown immediately and stop processing jobs.
+	 * QUIT: Shutdown immediately and stop processing jobs.
+	 */
+	private function registerSigHandlers()
+	{
+		if (!function_exists('pcntl_signal')) {
+			return;
+		}
+
+		declare(ticks = 1);
+
+		pcntl_signal(SIGTERM, array($this, 'stop'));
+		pcntl_signal(SIGINT, array($this, 'stop'));
+		pcntl_signal(SIGQUIT, array($this, 'stop'));
+
+		$this->log('Registered signal handlers');
 	}
 
 	/**
