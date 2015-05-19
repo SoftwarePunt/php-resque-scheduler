@@ -196,9 +196,7 @@ class ResqueScheduler_Worker
 	/**
 	 * Register signal handlers that a worker should respond to.
 	 *
-	 * TERM: Shutdown immediately and stop processing jobs.
-	 * INT: Shutdown immediately and stop processing jobs.
-	 * QUIT: Shutdown immediately and stop processing jobs.
+	 * TERM, INT, QUIT, SIGUSER1, SIGUSER2, SIGCONT: Stop immediately on the next iteration.
 	 */
 	private function registerSigHandlers()
 	{
@@ -211,6 +209,9 @@ class ResqueScheduler_Worker
 		pcntl_signal(SIGTERM, array($this, 'stop'));
 		pcntl_signal(SIGINT, array($this, 'stop'));
 		pcntl_signal(SIGQUIT, array($this, 'stop'));
+		pcntl_signal(SIGUSR1, array($this, 'stop'));
+		pcntl_signal(SIGUSR2, array($this, 'stop'));
+		pcntl_signal(SIGCONT, array($this, 'stop'));
 
 		$this->log('Registered signal handlers');
 	}
