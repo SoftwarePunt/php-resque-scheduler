@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Exception thrown whenever an invalid timestamp has been passed to a job.
 *
