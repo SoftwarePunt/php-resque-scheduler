@@ -96,3 +96,4 @@ if ($PIDFILE) {
 
 fwrite(STDOUT, "*** Starting scheduler worker\n");
 $worker->work($interval);
+fwrite(STDOUT, "*** Stopped scheduler worker\n");
